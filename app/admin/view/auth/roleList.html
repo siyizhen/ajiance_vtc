@@ -1,0 +1,73 @@
+{include file="common/head"/}
+	<div class="admin-main layui-anim layui-anim-upbit">
+	    <fieldset class="layui-elem-field layui-field-title">
+	        <legend>{:lang('role')}{:lang('list')}</legend>
+	    </fieldset>
+	    <blockquote class="layui-elem-quote">
+	        <a href="{:url('roleAdd')}" class="layui-btn layui-btn-sm">{:lang('add')}{:lang('role')}</a>
+	    </blockquote>
+	</div>
+	<div class="layui-form">
+		<table class="layui-table">
+		    <colgroup>
+		      <col width="80">
+		      <col width="80">
+		      <col>
+		      <col width="215">
+		    </colgroup>
+		    <thead>
+		      <tr>
+		        <th>ID</th>
+		        <th>排序</th>
+		        <th>角色名</th>
+		        <th>操作</th>
+		      </tr> 
+		    </thead>
+		    <tbody>
+		    {volist name="roleList" id="m"}
+		      <tr>
+		        <td>{$m.id}</td>
+		        <td>{$m.listorder}</td>
+		        <td>{$m.title_display}</td>
+		        <td>
+		        <a href="{:url('roleEdit')}?id={$m.id}" class="layui-btn layui-btn-xs"><i class="fa fa-paste"></i> 编辑
+		        </a>
+		        <button class="layui-btn layui-btn-xs layui-btn-danger" onclick="delAct({$m.id})"><i class="fa fa-trash-o"></i> 删除
+		        </button>
+		        </td>
+		      </tr>
+		    {/volist}
+		    </tbody>
+		  </table>
+	</div>
+    {include file="common/foot"/}
+
+    <script type="text/javascript">
+    	function delAct(id){
+    		layui.use('layer', function(){
+    			var layer = layui.layer,$ = layui.jquery;
+    			layer.confirm('您确定要删除吗？', {
+					btn: ['确定','取消']
+				}, function(){
+				 	$.ajax({
+				 		url: "{:url('roleDel')}?id="+id,
+				 		type: 'POST',
+				 		dataType: 'json',
+				 		data: {id:id},
+				 		success:function(res){
+				 			if(res.code){
+				 				layer.msg(res.msg,{icon:1});
+				 				setTimeout(function(){
+				 					location.reload();
+				 				},1000);
+				 			}else{
+				 				layer.msg(res.msg,{icon:2});
+				 			}
+				 		}
+				 	})
+				});
+    		})
+    	}
+    </script>
+    </body>
+</html>
