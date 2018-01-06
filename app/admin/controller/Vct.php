@@ -4,13 +4,18 @@
  * @emial:  1193814298@qq.com
  * @Date:   2018-01-05 14:01:02
  * @Last Modified by:   siyizhen
- * @Last Modified time: 2018-01-05 17:23:36
+ * @Last Modified time: 2018-01-07 00:05:13
  */
 namespace app\admin\controller;
 use think\Db;
 use think\Request;
 use think\Controller;
+
 class Vct extends Common{
+    public function _initialize(){
+        parent::_initialize();
+    }
+
 	public function index(){
         if(request()->isPost()) {
             $key = input('post.key');
@@ -37,13 +42,40 @@ class Vct extends Common{
         if(request()->isPost()){
             $data = input('post.');
             $data['addtime'] = time();
-            db('link')->insert($data);
+            foreach ($data as $k => $v) {
+                $data[$k]=trim($v);
+            }
+            if(!empty($data['visited_time'])){
+                $data['visited_time']=strtotime($data['visited_time']);
+            }
+            if(!empty($data['visited_time'])){
+                $data['last_jiance_time']=strtotime($data['last_jiance_time']);
+            }
+
+            if(!in_array(session('role_id'),$this->getAllVct())){
+                $data['role_id']=config('role_root_vct');
+            }else{
+                $data['role_id']=session('role_id');
+            }
+
+
+            //判断该用户是否已添加
+            $where=[
+                'username'=>$data['username'],
+                'phone'=>$data['phone']
+            ];
+            $row=db('vct',[],false)->where($where)->count('id');
+            if(!empty($row)){
+                db('vct',[],false)->where($where)->update($data);
+            }else{
+                db('vct',[],false)->insert($data);
+            }
             $result['code'] = 1;
-            $result['msg'] = '友情链接添加成功!';
-            $result['url'] = url('index');
-            cache('linkList', NULL);
+            $result['msg'] = 'VCT信息采集成功!';
+            $result['url'] = url('add');
             return $result;
         }else{
+            $this->assign('role_id',$role_id);
             $this->assign('title',lang('add').lang('vct'));
             $this->assign('info','null');
             return $this->fetch('form');

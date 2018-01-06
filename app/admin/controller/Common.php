@@ -48,4 +48,22 @@ class Common extends Controller
     public function _empty(){
         return $this->error('空操作，返回上次访问页面中...');
     }
+
+
+    protected $vctArr=[];
+    public function getVctArr($role_id){
+        $rows=db('role',[],false)->field('id,pid')->where('pid',$role_id)->select();
+        if(!empty($rows)){
+            foreach ($rows as $k => $v) {
+                array_push($this->vctArr,$v['id']);
+                $this->getVctArr($v['id']);
+            }
+        }
+    }
+
+    public function getAllVct(){
+        $this->getVctArr(config('role_root_vct'));
+        array_push($this->vctArr,config('role_root_vct'));
+        return $this->vctArr;
+    }
 }
