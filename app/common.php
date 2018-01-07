@@ -627,3 +627,84 @@ function send_email($to,$subject='',$content=''){
     $mail->msgHTML($content);
     return $mail->send();
 }
+
+/**
+ * 得知渠道
+ * @return  
+ */
+function fromQudao(){
+    $arr=[
+        1=>'blued',
+        2=>'微信',
+        3=>'QQ',
+        4=>'场所广告',
+        5=>'艾检测平台',
+        6=>'公众媒体',
+        7=>'朋友介绍'
+    ];
+    return $arr;
+}
+
+function getFromQudao($from_qudao){
+    $arr=fromQudao();
+    return $arr[$from_qudao];
+}
+
+/**
+ * 来访原因
+ * @return  
+ */
+function visitedReason(){
+    $arr=[
+        1=>'定期检测',
+        2=>'发生暴露行为',
+        3=>'恐艾者'
+    ];
+    return $arr;
+}
+
+function getVisitedReason($key){
+    $arr=visitedReason();
+    return $arr[$key];
+}
+
+/**
+ * 暴露原因
+ * @return [type] [description]
+ */
+function baolouReason(){
+    $arr=[
+        1=>'不安全性行为',
+        2=>'男男性行为',
+        3=>'注射毒品',
+        4=>'输血',
+        5=>'母婴传播',
+        6=>'其他'
+    ];
+    return $arr;
+}
+
+function getBaolouReason($key){
+    $arr=baolouReason();
+    return $arr[$key];
+}
+
+/**
+ * 人群属性
+ * @return  
+ */
+function renqunShuxing(){
+    $arr=[
+        1=>'男男性行为者',
+        2=>'双性恋者',
+        3=>'异性恋者',
+        4=>'女性性工作者',
+        5=>'吸毒者'
+    ];
+    return $arr;
+}
+
+function getRenqunShuxing($key){
+    $arr=renqunShuxing();
+    return $arr[$key];
+}

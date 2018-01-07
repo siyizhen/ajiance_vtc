@@ -34,14 +34,13 @@
             method:'post',
             cols: [[
                 {type: "checkbox", fixed: true},
-                {field:'username', title: '用户名', width:180,fixed: true}
-                ,{field:'email', title: '邮箱', width:200}
-                ,{field:'role', title: '{:lang("role")}', width:200}
-                ,{field:'title', title: '{:lang("userGroup")}', width:200}
-                ,{field:'tel', title: '{:lang("tel")}', width:150}
-                ,{field:'ip', title: '{:lang("ip")}',width:150}
-                ,{field:'is_open', title: '{:lang("status")}',width:150,toolbar: '#open'}
-                ,{width:160, align:'center', toolbar: '#barDemo'}
+                {field:'admin_id', title: 'ID', width:80},
+                {field:'username', title: '用户名', width:100},
+                {field:'role', title: '{:lang("role")}', width:200},
+                {field:'title', title: '{:lang("userGroup")}', width:200},
+                {field:'ip', title: '{:lang("ip")}',width:100},
+                {field:'is_open', title: '{:lang("status")}',width:100,toolbar: '#open'},
+                {fixed:'right',width:160, align:'center', toolbar: '#barDemo'}
             ]]
         });
         form.on('switch(open)', function(obj){

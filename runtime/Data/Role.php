@@ -15,7 +15,7 @@ return array (
     'name' => '长沙青彩总部',
     'status' => 1,
     'remark' => '',
-    'pid' => 0,
+    'pid' => 11,
     'listorder' => 0,
   ),
   7 => 
@@ -42,7 +42,7 @@ return array (
     'name' => '武汉青彩总部',
     'status' => 1,
     'remark' => '',
-    'pid' => 0,
+    'pid' => 11,
     'listorder' => 0,
   ),
   10 => 
@@ -52,6 +52,15 @@ return array (
     'status' => 1,
     'remark' => '',
     'pid' => 9,
+    'listorder' => 0,
+  ),
+  11 => 
+  array (
+    'id' => 11,
+    'name' => 'VCT机构角色',
+    'status' => 1,
+    'remark' => 'VCT机构角色',
+    'pid' => 0,
     'listorder' => 0,
   ),
 );

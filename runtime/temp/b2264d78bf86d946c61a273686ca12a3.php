@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:3:{s:48:"E:\www\ajiance_vct/app/admin\view\vct\index.html";i:1515234151;s:50:"E:\www\ajiance_vct/app/admin\view\common\head.html";i:1515234151;s:50:"E:\www\ajiance_vct/app/admin\view\common\foot.html";i:1515234151;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:3:{s:48:"E:\www\ajiance_vct/app/admin\view\vct\index.html";i:1515340721;s:50:"E:\www\ajiance_vct/app/admin\view\common\head.html";i:1515234151;s:50:"E:\www\ajiance_vct/app/admin\view\common\foot.html";i:1515234151;}*/ ?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -19,9 +19,114 @@
     <fieldset class="layui-elem-field layui-field-title">
         <legend><?php echo lang('vct'); ?>管理</legend>
     </fieldset>
-    <div class="demoTable">
+    <div class="demoTable layui-form">
         <div class="layui-inline">
-            <input class="layui-input" name="keywords" id="keywords" placeholder="<?php echo lang('pleaseEnter'); ?>关键字">
+            <label class="layui-form-label" style="width: 56px;">首次检测</label>
+            <div class="layui-input-inline" style="width: 100px;">
+                <select id="is_first_jiance" lay-verify="required" lay-search="">
+                    <option value="">请选择</option>
+                    <option value="1">是</option>
+                    <option value="0">否</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="layui-inline">
+            <label class="layui-form-label" style="width: 56px;">得知渠道</label>
+            <div class="layui-input-inline" style="width: 100px;">
+                <select id="from_qudao" lay-verify="required" lay-search="">
+                    <option value="">请选择</option>
+                    <?php $qudaoArr=fromQudao();if(is_array($qudaoArr) || $qudaoArr instanceof \think\Collection || $qudaoArr instanceof \think\Paginator): $n = 0; $__LIST__ = $qudaoArr;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$m): $mod = ($n % 2 );++$n;?>
+                    <option value="<?php echo $n; ?>"><?php echo $m; ?></option>
+                    <?php endforeach; endif; else: echo "" ;endif; ?>
+                </select>
+            </div>
+        </div>
+
+        <div class="layui-inline">
+            <label class="layui-form-label" style="width: 56px;">来访原因</label>
+            <div class="layui-input-inline" style="width: 100px;">
+                <select id="visited_reason" lay-verify="required" lay-search="">
+                    <option value="">请选择</option>
+                    <?php $reasonArr=visitedReason();if(is_array($reasonArr) || $reasonArr instanceof \think\Collection || $reasonArr instanceof \think\Paginator): $n = 0; $__LIST__ = $reasonArr;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$m): $mod = ($n % 2 );++$n;?>
+                    <option value="<?php echo $n; ?>"><?php echo $m; ?></option>
+                    <?php endforeach; endif; else: echo "" ;endif; ?>
+                </select>
+            </div>
+        </div>
+
+        <div class="layui-inline">
+            <label class="layui-form-label" style="width: 56px;">暴露原因</label>
+            <div class="layui-input-inline" style="width: 100px;">
+                <select id="baolou_reason" lay-verify="required" lay-search="" lay-filter="baolou_reason">
+                    <option value="">请选择</option>
+                    <?php $baoluArr=baolouReason();if(is_array($baoluArr) || $baoluArr instanceof \think\Collection || $baoluArr instanceof \think\Paginator): $n = 0; $__LIST__ = $baoluArr;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$m): $mod = ($n % 2 );++$n;?>
+                    <option value="<?php echo $n; ?>"><?php echo $m; ?></option>
+                    <?php endforeach; endif; else: echo "" ;endif; ?>
+                </select>
+            </div>
+        </div>
+
+        <div class="layui-inline">
+            <label class="layui-form-label" style="width: 56px;">人群属性</label>
+            <div class="layui-input-inline" style="width: 100px;">
+                <select id="renqun_shuxing" lay-verify="required" lay-search="">
+                    <option value="">请选择</option>
+                    <?php $renqunArr=renqunShuxing();if(is_array($renqunArr) || $renqunArr instanceof \think\Collection || $renqunArr instanceof \think\Paginator): $n = 0; $__LIST__ = $renqunArr;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$m): $mod = ($n % 2 );++$n;?>
+                    <option value="<?php echo $n; ?>"><?php echo $m; ?></option>
+                    <?php endforeach; endif; else: echo "" ;endif; ?>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="demoTable layui-form" style="margin-top: 10px;">
+        <div class="layui-inline">
+            <label class="layui-form-label" style="width: 56px;">金标检测</label>
+            <div class="layui-input-inline" style="width: 100px;">
+                <select id="jinbiao_jiance" lay-verify="required" lay-search="">
+                    <option value="">请选择</option>
+                    <option value="1">阴性</option>
+                    <option value="2">待复查</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="layui-inline">
+            <label class="layui-form-label" style="width: 56px;">领取礼品</label>
+            <div class="layui-input-inline" style="width: 100px;">
+                <select id="is_take_gift" lay-verify="required" lay-search="">
+                    <option value="">请选择</option>
+                    <option value="1">是</option>
+                    <option value="0">否</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="layui-inline">
+            <label class="layui-form-label" style="width: 56px;">加咨询员</label>
+            <div class="layui-input-inline" style="width: 100px;">
+                <select id="is_get_weixin" lay-verify="required" lay-search="">
+                    <option value="">请选择</option>
+                    <option value="1">是</option>
+                    <option value="0">否</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="layui-inline">
+            <label class="layui-form-label" style="width: 56px;">加艾检测</label>
+            <div class="layui-input-inline" style="width: 100px;">
+                <select id="is_take_ajiance" lay-verify="required" lay-search="">
+                    <option value="">请选择</option>
+                    <option value="1">是</option>
+                    <option value="0">否</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="demoTable layui-form" style="margin-top: 10px;">
+        <div class="layui-inline" style="width: 23%;">
+            <input class="layui-input" name="key" id="key" placeholder="姓名/身份证/电话/地址/检测编号/礼品">
         </div>
         <button class="layui-btn" id="search" data-type="reload"><?php echo lang('search'); ?></button>
         <a href="<?php echo url('index'); ?>" class="layui-btn">显示全部</a>
@@ -34,24 +139,15 @@
 <script type="text/javascript" src="__STATIC__/plugins/layui/layui.js"></script>
 
 
-<script type="text/html" id="name">
-   {{d.name}}{{# if(d.pic){ }}<img src="__ADMIN__/images/image.gif" onmouseover="layer.tips('<img src=__PUBLIC__/{{d.pic}}>',this,{tips: [1, '#fff']});" onmouseout="layer.closeAll();">{{# } }}
-</script>
-<script type="text/html" id="order">
-    <input name="{{d.ad_id}}" data-id="{{d.ad_id}}" class="list_order layui-input" value=" {{d.sort}}" size="10"/>
-</script>
-<script type="text/html" id="open">
-    <input type="checkbox" name="open" value="{{d.ad_id}}" lay-skin="switch" lay-text="开启|关闭" lay-filter="open" {{ d.open == 1 ? 'checked' : '' }}>
-</script>
 <script type="text/html" id="action">
-    <a href="<?php echo url('edit'); ?>?ad_id={{d.ad_id}}" class="layui-btn layui-btn-xs">编辑</a>
+    <a href="<?php echo url('edit'); ?>?id={{d.id}}" class="layui-btn layui-btn-xs">编辑</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
 <script>
     layui.use(['table','form'], function() {
         var table = layui.table,form = layui.form,$ = layui.jquery;
         var tableIn = table.render({
-            id: 'ad',
+            id: 'vct',
             elem: '#list',
             url: '<?php echo url("index"); ?>',
             method: 'post',
@@ -64,24 +160,24 @@
                 {field: 'age', title: '年龄',width: 60,align: 'center'},
                 {field: 'idcard', title: '身份证',width: 200,align: 'center'},
                 {field: 'phone', title: '联系电话', width: 160},
-                {field: 'address', title: '现居地',width: 100,align: 'center'},
+                {field: 'address', title: '现居地',width: 160,align: 'center'},
                 {field: 'jiance_bianhao', align: 'center', title: '检测编号', width: 120,align: 'center'},
-                {field: 'is_first_jiance', title: '首次检测', width: 100},
-                {field: 'visited_time', title: '来访时间', width: 100},
-                {field: 'zixundian', title: '咨询点', width: 100},
-                {field: 'from_qudao', title: '得知渠道', width: 100},
-                {field: 'visited_reason', title: '来访原因', width: 100},
-                {field: 'baolou_reason', title: '暴露原因', width: 100},
-                {field: 'renqun_shuxing', title: '人群属性', width: 100},
-                {field: 'jinbiao_jiance', title: '金标检测', width: 100},
-                {field: 'quezheng_danwei', title: '确证单位', width: 100},
-                {field: 'last_jiance_jigou', title: '上次检测机构', width: 150},
-                {field: 'last_jiance_time', title: '上次检测时间', width: 150},
-                {field: 'is_take_gift', title: '领取礼品', width: 100},
-                {field: 'gift', title: '礼品名', width: 100},
-                {field: 'is_get_weixin', title: '加咨询员微信/QQ', width: 200},
-                {field: 'is_take_ajiance', title: '关注艾检测', width: 170},
-                {fixed: 'right',width: 100, toolbar: '#action'}
+                {field: 'is_first_jiance', title: '首次检测', width: 100,align: 'center'},
+                {field: 'visited_time', title: '来访时间', width: 110,align: 'center'},
+                {field: 'zixundian', title: '咨询点', width: 160,align: 'center'},
+                {field: 'from_qudao', title: '得知渠道', width: 100,align: 'center'},
+                {field: 'visited_reason', title: '来访原因', width: 100,align: 'center'},
+                {field: 'baolou_reason', title: '暴露原因', width: 160,align: 'center'},
+                {field: 'renqun_shuxing', title: '人群属性', width: 100,align: 'center'},
+                {field: 'jinbiao_jiance', title: '金标检测', width: 100,align: 'center'},
+                {field: 'quezheng_danwei', title: '确证单位', width: 100,align: 'center'},
+                {field: 'last_jiance_jigou', title: '上次检测机构', width: 130,align: 'center'},
+                {field: 'last_jiance_time', title: '上次检测时间', width: 130,align: 'center'},
+                {field: 'is_take_gift', title: '领取礼品', width: 100,align: 'center'},
+                {field: 'gift', title: '礼品名', width: 100,align: 'center'},
+                {field: 'is_get_weixin', title: '加咨询员微信/QQ', width: 140,align: 'center'},
+                {field: 'is_take_ajiance', title: '关注艾检测', width: 130,align: 'center'},
+                {fixed: 'right',width: 100, title: '操作',toolbar: '#action',align:'center'}
             ]],
             limit:10
         });
@@ -101,21 +197,27 @@
         });
         //搜索
         $('#search').on('click', function () {
-            var keywords = $('#keywords').val();
-            if ($.trim(keywords) === '') {
-                layer.msg('<?php echo lang("pleaseEnter"); ?>关键字！', {icon: 0});
-                return;
-            }
+            var key = $('#key').val();
+            var is_first_jiance = $('#is_first_jiance').val();
+            var from_qudao = $('#from_qudao').val();
+            var visited_reason = $('#visited_reason').val();
+            var baolou_reason = $('#baolou_reason').val();
+            var renqun_shuxing = $('#renqun_shuxing').val();
+            var jinbiao_jiance = $('#jinbiao_jiance').val();
+            var is_take_gift = $('#is_take_gift').val();
+            var is_get_weixin = $('#is_get_weixin').val();
+            var is_take_ajiance = $('#is_take_ajiance').val();
+
             tableIn.reload({
-                where: {keywords: keywords}
+                where: {key: key,is_first_jiance:is_first_jiance,from_qudao:from_qudao,visited_reason:visited_reason,baolou_reason:baolou_reason,renqun_shuxing:renqun_shuxing,jinbiao_jiance:jinbiao_jiance,is_take_gift:is_take_gift,is_get_weixin:is_get_weixin,is_take_ajiance:is_take_ajiance}
             });
         });
         table.on('tool(list)', function(obj) {
             var data = obj.data;
             if (obj.event === 'del'){
-                layer.confirm('您确定要删除该广告吗？', function(index){
+                layer.confirm('您确定要删除该数据吗？', function(index){
                     var loading = layer.load(1, {shade: [0.1, '#fff']});
-                    $.post("<?php echo url('del'); ?>",{ad_id:data.ad_id},function(res){
+                    $.post("<?php echo url('del'); ?>",{id:data.id},function(res){
                         layer.close(loading);
                         if(res.code===1){
                             layer.msg(res.msg,{time:1000,icon:1});
@@ -143,12 +245,12 @@
             })
         });
         $('#delAll').click(function(){
-            layer.confirm('确认要删除选中的广告吗？', {icon: 3}, function(index) {
+            layer.confirm('确认要删除选中的数据吗？', {icon: 3}, function(index) {
                 layer.close(index);
-                var checkStatus = table.checkStatus('ad'); //test即为参数id设定的值
+                var checkStatus = table.checkStatus('vct'); //test即为参数id设定的值
                 var ids = [];
                 $(checkStatus.data).each(function (i, o) {
-                    ids.push(o.ad_id);
+                    ids.push(o.id);
                 });
                 var loading = layer.load(1, {shade: [0.1, '#fff']});
                 $.post("<?php echo url('delall'); ?>", {ids: ids}, function (data) {
