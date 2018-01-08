@@ -708,3 +708,40 @@ function getRenqunShuxing($key){
     $arr=renqunShuxing();
     return $arr[$key];
 }
+
+function sendSms($data) {
+    $params = array ();
+    $accessKeyId = config('accessKeyId');
+    $accessKeySecret = config('accessKeySecret');
+
+    // fixme 必填: 短信接收号码
+    $params["PhoneNumbers"] = $data['phone'];
+
+    $params["SignName"] = config('signName');
+
+    $params["TemplateCode"] = $data['codeTemplate'];
+
+    // fixme 可选: 设置模板参数, 假如模板中存在变量需要替换则为必填项
+    $params['TemplateParam'] = $data['params'];
+
+    if(!empty($params["TemplateParam"]) && is_array($params["TemplateParam"])) {
+        $params["TemplateParam"] = json_encode($params["TemplateParam"], JSON_UNESCAPED_UNICODE);
+    }
+
+    // 初始化SignatureHelper实例用于设置参数，签名以及发送请求
+    require_once 'vendor/sms/SignatureHelper.php';
+    $helper = new SignatureHelper();
+
+    // 此处可能会抛出异常，注意catch
+    $content = $helper->request(
+        $accessKeyId,
+        $accessKeySecret,
+        "dysmsapi.aliyuncs.com",
+        array_merge($params, array(
+            "RegionId" => "cn-hangzhou",
+            "Action" => "SendSms",
+            "Version" => "2017-05-25",
+        ))
+    );
+    return $content;
+}

@@ -1,7 +1,23 @@
-{include file="common/head"/}
+<?php if (!defined('THINK_PATH')) exit(); /*a:3:{s:40:"F:\www\php/app/admin\view\vct\index.html";i:1515388302;s:42:"F:\www\php/app/admin\view\common\head.html";i:1514860702;s:42:"F:\www\php/app/admin\view\common\foot.html";i:1514860702;}*/ ?>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title><?php echo config('sys_name'); ?>后台管理</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="stylesheet" href="__STATIC__/plugins/layui/css/layui.css" media="all" />
+    <link rel="stylesheet" href="__ADMIN__/css/global.css" media="all">
+    <link rel="stylesheet" href="__STATIC__/common/css/font.css" media="all">
+</head>
+<body class="skin-<?php if(!empty($_COOKIE['skin'])){echo $_COOKIE['skin'];}else{echo '0';setcookie('skin','0');}?>">
 <div class="admin-main layui-anim layui-anim-upbit">
     <fieldset class="layui-elem-field layui-field-title">
-        <legend>{:lang('vct')}管理</legend>
+        <legend><?php echo lang('vct'); ?>管理</legend>
     </fieldset>
     <div class="demoTable layui-form">
         <div class="layui-inline">
@@ -20,10 +36,9 @@
             <div class="layui-input-inline" style="width: 100px;">
                 <select id="from_qudao" lay-verify="required" lay-search="">
                     <option value="">请选择</option>
-                    <?php $qudaoArr=fromQudao();?>
-                    {volist name="qudaoArr" id="m" key="n"}
-                    <option value="{$n}">{$m}</option>
-                    {/volist}
+                    <?php $qudaoArr=fromQudao();if(is_array($qudaoArr) || $qudaoArr instanceof \think\Collection || $qudaoArr instanceof \think\Paginator): $n = 0; $__LIST__ = $qudaoArr;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$m): $mod = ($n % 2 );++$n;?>
+                    <option value="<?php echo $n; ?>"><?php echo $m; ?></option>
+                    <?php endforeach; endif; else: echo "" ;endif; ?>
                 </select>
             </div>
         </div>
@@ -33,10 +48,9 @@
             <div class="layui-input-inline" style="width: 100px;">
                 <select id="visited_reason" lay-verify="required" lay-search="">
                     <option value="">请选择</option>
-                    <?php $reasonArr=visitedReason();?>
-                    {volist name="reasonArr" id="m" key="n"}
-                    <option value="{$n}">{$m}</option>
-                    {/volist}
+                    <?php $reasonArr=visitedReason();if(is_array($reasonArr) || $reasonArr instanceof \think\Collection || $reasonArr instanceof \think\Paginator): $n = 0; $__LIST__ = $reasonArr;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$m): $mod = ($n % 2 );++$n;?>
+                    <option value="<?php echo $n; ?>"><?php echo $m; ?></option>
+                    <?php endforeach; endif; else: echo "" ;endif; ?>
                 </select>
             </div>
         </div>
@@ -46,10 +60,9 @@
             <div class="layui-input-inline" style="width: 100px;">
                 <select id="baolou_reason" lay-verify="required" lay-search="" lay-filter="baolou_reason">
                     <option value="">请选择</option>
-                    <?php $baoluArr=baolouReason();?>
-                    {volist name="baoluArr" id="m" key="n"}
-                    <option value="{$n}">{$m}</option>
-                    {/volist}
+                    <?php $baoluArr=baolouReason();if(is_array($baoluArr) || $baoluArr instanceof \think\Collection || $baoluArr instanceof \think\Paginator): $n = 0; $__LIST__ = $baoluArr;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$m): $mod = ($n % 2 );++$n;?>
+                    <option value="<?php echo $n; ?>"><?php echo $m; ?></option>
+                    <?php endforeach; endif; else: echo "" ;endif; ?>
                 </select>
             </div>
         </div>
@@ -59,10 +72,9 @@
             <div class="layui-input-inline" style="width: 100px;">
                 <select id="renqun_shuxing" lay-verify="required" lay-search="">
                     <option value="">请选择</option>
-                    <?php $renqunArr=renqunShuxing();?>
-                    {volist name="renqunArr" id="m" key="n"}
-                    <option value="{$n}">{$m}</option>
-                    {/volist}
+                    <?php $renqunArr=renqunShuxing();if(is_array($renqunArr) || $renqunArr instanceof \think\Collection || $renqunArr instanceof \think\Paginator): $n = 0; $__LIST__ = $renqunArr;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$m): $mod = ($n % 2 );++$n;?>
+                    <option value="<?php echo $n; ?>"><?php echo $m; ?></option>
+                    <?php endforeach; endif; else: echo "" ;endif; ?>
                 </select>
             </div>
         </div>
@@ -117,9 +129,9 @@
             <div class="layui-input-inline" style="width: 100px;">
                 <select id="role_id" lay-verify="required" lay-search="">
                     <option value="">请选择</option>
-                    {volist name="zixundianList" id="m" key="n"}
-                    <option value="{$m.id}">{$m.title_display}</option>
-                    {/volist}
+                    <?php if(is_array($zixundianList) || $zixundianList instanceof \think\Collection || $zixundianList instanceof \think\Paginator): $n = 0; $__LIST__ = $zixundianList;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$m): $mod = ($n % 2 );++$n;?>
+                    <option value="<?php echo $m['id']; ?>"><?php echo $m['title_display']; ?></option>
+                    <?php endforeach; endif; else: echo "" ;endif; ?>
                 </select>
             </div>
         </div>
@@ -131,22 +143,24 @@
         <div class="layui-inline" style="width:11%;">
             <input type="text" class="layui-input" id="addtime" placeholder="请选择时间范围">
         </div>
-        <button class="layui-btn" id="search" data-type="reload">{:lang('search')}</button>
+        <button class="layui-btn" id="search" data-type="reload"><?php echo lang('search'); ?></button>
         <a href="javascript:sendSms();" class="layui-btn layui-btn-normal">发短信</a>
         <button type="button" class="layui-btn layui-btn-danger" id="delAll">批量删除</button>
-        <a href="{:url('add')}" class="layui-btn" style="float:right;"><i class="fa fa-plus" aria-hidden="true"></i>{:lang('add')}{:lang('vct')}</a>
+        <a href="<?php echo url('add'); ?>" class="layui-btn" style="float:right;"><i class="fa fa-plus" aria-hidden="true"></i><?php echo lang('add'); ?><?php echo lang('vct'); ?></a>
         <div style="clear: both;"></div>
     </div>
     <table class="layui-table" id="list" lay-filter="list"></table>
 </div>
-{include file="common/foot"/}
+<script type="text/javascript" src="__STATIC__/plugins/layui/layui.js"></script>
+
+
 <script type="text/html" id="action">
     <a href="javascript:printInfo({{d.id}});" class="layui-btn layui-btn-danger layui-btn-xs">打印</a>
-    <a href="{:url('edit')}?id={{d.id}}" class="layui-btn layui-btn-xs">编辑</a>
+    <a href="<?php echo url('edit'); ?>?id={{d.id}}" class="layui-btn layui-btn-xs">编辑</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
 <script>
-    var urls="{:url('printInfo')}?id=";
+    var urls="<?php echo url('printInfo'); ?>?id=";
     function printInfo(id){
         var title="详细资料";
         parent.tab.tabAdd({
@@ -168,7 +182,7 @@
                 return;
             }
             $.ajax({
-                url: "{:url('sendSms')}",
+                url: "<?php echo url('sendSms'); ?>",
                 type: 'POST',
                 dataType: 'json',
                 data: {phones:phones},
@@ -184,7 +198,7 @@
         var tableIn = table.render({
             id: 'vct',
             elem: '#list',
-            url: '{:url("index")}',
+            url: '<?php echo url("index"); ?>',
             method: 'post',
             page:true,
             cols: [[
@@ -226,7 +240,7 @@
             loading =layer.load(1, {shade: [0.1,'#fff']});
             var id = this.value;
             var open = obj.elem.checked===true?1:0;
-            $.post('{:url("editState")}',{'id':id,'open':open},function (res) {
+            $.post('<?php echo url("editState"); ?>',{'id':id,'open':open},function (res) {
                 layer.close(loading);
                 if (res.status==1) {
                     tableIn.reload();
@@ -260,7 +274,7 @@
             if (obj.event === 'del'){
                 layer.confirm('您确定要删除该数据吗？', function(index){
                     var loading = layer.load(1, {shade: [0.1, '#fff']});
-                    $.post("{:url('del')}",{id:data.id},function(res){
+                    $.post("<?php echo url('del'); ?>",{id:data.id},function(res){
                         layer.close(loading);
                         if(res.code===1){
                             layer.msg(res.msg,{time:1000,icon:1});
@@ -277,7 +291,7 @@
             var ad_id = $(this).attr('data-id');
             var sort = $(this).val();
             var loading = layer.load(1, {shade: [0.1, '#fff']});
-            $.post('{:url("adOrder")}',{ad_id:ad_id,sort:sort},function(res){
+            $.post('<?php echo url("adOrder"); ?>',{ad_id:ad_id,sort:sort},function(res){
                 layer.close(loading);
                 if(res.code === 1){
                     layer.msg(res.msg, {time: 1000, icon: 1});
@@ -296,7 +310,7 @@
                     ids.push(o.id);
                 });
                 var loading = layer.load(1, {shade: [0.1, '#fff']});
-                $.post("{:url('delall')}", {ids: ids}, function (data) {
+                $.post("<?php echo url('delall'); ?>", {ids: ids}, function (data) {
                     layer.close(loading);
                     if (data.code === 1) {
                         layer.msg(data.msg, {time: 1000, icon: 1});

@@ -66,4 +66,8 @@ class Common extends Controller
         array_push($this->vctArr,config('role_root_vct'));
         return $this->vctArr;
     }
+
+    public function getAllNext($role_id){
+
+    }
 }

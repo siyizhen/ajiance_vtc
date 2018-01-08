@@ -4,12 +4,13 @@
  * @emial:  1193814298@qq.com
  * @Date:   2018-01-05 14:01:02
  * @Last Modified by:   siyizhen
- * @Last Modified time: 2018-01-08 00:02:00
+ * @Last Modified time: 2018-01-08 15:37:43
  */
 namespace app\admin\controller;
 use think\Db;
 use think\Request;
 use think\Controller;
+use tree\Tree;
 
 class Vct extends Common{
     public function _initialize(){
@@ -29,8 +30,37 @@ class Vct extends Common{
             $is_take_gift = input('param.is_take_gift');
             $is_get_weixin = input('param.is_get_weixin');
             $is_take_ajiance = input('param.is_take_ajiance');
+            $role_id = input('param.role_id');
+            $addtime = input('param.addtime');
 
             $where['a.username|a.idcard|a.phone|a.address|a.jiance_bianhao|a.gift']=['like',"%$key%"];
+            if(session('aid')!=1){//超级管理员显示所有
+                if($role_id==''){
+                    $role_id=session('role_id');
+                    if(in_array($role_id,$this->getAllVct())){
+                        //如果属于vct机构管理员角色 则获取所有下级办公室
+                        $this->vctArr=[];//先清空以前的数据
+                        $this->getVctArr($role_id);
+                        $allNext=$this->vctArr;
+                        array_push($allNext,$role_id);
+                        $where['a.role_id']=array('in',$allNext);
+                    }
+                }else{
+                    $where['a.role_id']=$role_id;
+                }
+            }else{
+                if($role_id!=''){
+                    $where['a.role_id']=$role_id;
+                }
+            }
+
+            if(!empty($addtime)){
+                $addtimeArr=explode(' - ',$addtime);
+                $addtime_start=strtotime($addtimeArr[0]);
+                $addtime_end=strtotime($addtimeArr[1]);
+                $addtime_end=$addtime_end+3600*24-1;
+                $where['a.addtime']=array('between',"$addtime_start,$addtime_end");
+            }
             if($is_first_jiance!=''){
                 $where['a.is_first_jiance']=$is_first_jiance;
             }
@@ -113,6 +143,26 @@ class Vct extends Common{
             }
             return $result = ['code'=>0,'msg'=>'获取成功!','data'=>$list['data'],'count'=>$list['total'],'rel'=>1];
         }
+        if(session('aid')!=1){//超级管理员显示所有
+            $role_id=session('role_id');
+            if(in_array($role_id,$this->getAllVct())){
+                //如果属于vct机构管理员角色 则获取所有下级办公室
+                $this->vctArr=[];//先清空以前的数据
+                $this->getVctArr($role_id);
+            }
+        }else{
+            $this->getAllVct();
+        }
+        $allNext=$this->vctArr;
+        $zixundianList=db('role',[],false)->where('id','in',$allNext)->field('pid,id,name')->select();
+        $config=[
+            'id'=>'id',
+            'pid'=>'pid',
+            'title'=>'name'
+        ];
+        $tree=new Tree($config);
+        $zixundianList=$tree->toList($zixundianList);
+        $this->assign('zixundianList',$zixundianList);
         return $this->fetch();
     }
 
@@ -201,5 +251,274 @@ class Vct extends Common{
         $result['code'] = 1;
         $result['url'] = url('index');
         return $result;
+    }
+
+    public function printInfo(){
+        $id=input('id');
+        $info=db('vct',[],false)->alias('a')->join('__ROLE__ b','a.role_id=b.id')->where(array('a.id'=>$id))->field('a.*,b.name as zixundian')->find();
+        $this->assign('info',$info);
+        return $this->fetch();
+    }
+
+    public function sendSms(){
+        $phones=input('param.phones/a');
+        $data=[];
+        foreach ($phones as $k => $v) {
+            $data=[
+                'phone'=>$v,
+                'codeTemplate'=>config('vct_template_code'),
+                'params'=>[
+                    'code'=>10000
+                ]
+            ];
+            sendSms($data);
+        }
+        $result['msg'] = '发送成功！';
+        $result['code'] = 1;
+        return json($result);
+    }
+
+    public function tongJi(){
+        if(request()->isAjax()){
+            $types=input('param.types');
+            $role_id=input('param.role_id');
+            $addtime=input('param.addtime');
+
+            $where=[];
+            if(!empty($role_id)){
+                $this->getVctArr($role_id);
+                $allNext=$this->vctArr;
+                array_push($allNext,$role_id);
+                $where['role_id']=array('in',$allNext);
+            }
+
+            if(!empty($addtime)){
+                $addtimeArr=explode(' - ',$addtime);
+                $addtime_start=strtotime($addtimeArr[0]);
+                $addtime_end=strtotime($addtimeArr[1]);
+                $addtime_end=$addtime_end+3600*24-1;
+                $where['addtime']=array('between',"$addtime_start,$addtime_end");
+            }
+            $one=$two=$three=$four=$five=$six=$seven=$eight=$nine=$ten=0;
+            $rows=db('vct',[],false)->where($where)->select();
+            switch ($types) {
+                case '1':
+                    $seriesData=[
+                        ['value'=>0,'name'=>'是'],
+                        ['value'=>0,'name'=>'否']
+                    ];
+                    foreach ($rows as $k => $v) {
+                        if($v['is_first_jiance']==1){
+                            $seriesData[0]['value']++;
+                        }elseif($v['is_first_jiance']==0){
+                            $seriesData[1]['value']++;
+                        }
+                    }
+                    $valueArr=array($seriesData[0]['value'],$seriesData[1]['value']);
+                    $legendData=['是','否'];
+                    $arr=[
+                        'legendData'=>$legendData,
+                        'seriesData'=>$seriesData,
+                        'title'=>'首次检测'
+                    ];
+                    break;
+                case '2':
+                    $legendData=$seriesData=$zhuSeriesData=[];
+                    foreach (fromQudao() as $k => $v) {
+                        array_push($legendData,$v);
+                        $zhuSeriesData[$k-1]=0;
+                        $seriesData[$k-1]['value']=0;
+                        $seriesData[$k-1]['name']=$v;
+                    }
+
+                    foreach ($rows as $k => $v) {
+                        foreach (fromQudao() as $n => $m) {
+                            if($v['from_qudao']==$n){
+                                $zhuSeriesData[$n-1]++;
+                                $seriesData[$n-1]['value']++;
+                            }
+                        }
+                    }
+                    $arr=[
+                        'legendData'=>$legendData,
+                        'zhuSeriesData'=>$zhuSeriesData,
+                        'seriesData'=>$seriesData,
+                        'title'=>'得知渠道'
+                    ];
+                    break;
+                case '3':
+                    $legendData=$seriesData=$zhuSeriesData=[];
+                    foreach (visitedReason() as $k => $v) {
+                        array_push($legendData,$v);
+                        $zhuSeriesData[$k-1]=0;
+                        $seriesData[$k-1]['value']=0;
+                        $seriesData[$k-1]['name']=$v;
+                    }
+                    foreach ($rows as $k => $v) {
+                        foreach (visitedReason() as $n => $m) {
+                            if($v['visited_reason']==$n){
+                                $zhuSeriesData[$n-1]++;
+                                $seriesData[$n-1]['value']++;
+                            }
+                        }
+                    }
+                    $arr=[
+                        'legendData'=>$legendData,
+                        'zhuSeriesData'=>$zhuSeriesData,
+                        'seriesData'=>$seriesData,
+                        'title'=>'来访原因'
+                    ];
+                    break;
+                case '4':
+                    $legendData=$seriesData=$zhuSeriesData=[];
+                    foreach (baolouReason() as $k => $v) {
+                        array_push($legendData,$v);
+                        $zhuSeriesData[$k-1]=0;
+                        $seriesData[$k-1]['value']=0;
+                        $seriesData[$k-1]['name']=$v;
+                    }
+                    foreach ($rows as $k => $v) {
+                        foreach (baolouReason() as $n => $m) {
+                            if($v['baolou_reason']==$n){
+                                $zhuSeriesData[$n-1]++;
+                                $seriesData[$n-1]['value']++;
+                            }
+                        }
+                    }
+                    $arr=[
+                        'legendData'=>$legendData,
+                        'zhuSeriesData'=>$zhuSeriesData,
+                        'seriesData'=>$seriesData,
+                        'title'=>'暴露原因'
+                    ];
+                    break;
+                case '5':
+                    $legendData=$seriesData=$zhuSeriesData=[];
+                    foreach (renqunShuxing() as $k => $v) {
+                        array_push($legendData,$v);
+                        $zhuSeriesData[$k-1]=0;
+                        $seriesData[$k-1]['value']=0;
+                        $seriesData[$k-1]['name']=$v;
+                    }
+                    foreach ($rows as $k => $v) {
+                        foreach (renqunShuxing() as $n => $m) {
+                            if($v['renqun_shuxing']==$n){
+                                $zhuSeriesData[$n-1]++;
+                                $seriesData[$n-1]['value']++;
+                            }
+                        }
+                    }
+                    $arr=[
+                        'legendData'=>$legendData,
+                        'zhuSeriesData'=>$zhuSeriesData,
+                        'seriesData'=>$seriesData,
+                        'title'=>'人群属性'
+                    ];
+                    break;
+                case '6':
+                    $seriesData=[
+                        ['value'=>0,'name'=>'阴性'],
+                        ['value'=>0,'name'=>'待复查']
+                    ];
+                    foreach ($rows as $k => $v) {
+                        if($v['jinbiao_jiance']==1){
+                            $seriesData[0]['value']++;
+                        }elseif($v['jinbiao_jiance']==2){
+                            $seriesData[1]['value']++;
+                        }
+                    }
+                    $valueArr=array($seriesData[0]['value'],$seriesData[1]['value']);
+                    $legendData=['阴性','待复查'];
+                    $arr=[
+                        'legendData'=>$legendData,
+                        'seriesData'=>$seriesData,
+                        'title'=>'金标检测'
+                    ];
+                    break;
+                case '7':
+                    $seriesData=[
+                        ['value'=>0,'name'=>'是'],
+                        ['value'=>0,'name'=>'否']
+                    ];
+                    foreach ($rows as $k => $v) {
+                        if($v['is_take_gift']==1){
+                            $seriesData[0]['value']++;
+                        }elseif($v['is_take_gift']==0){
+                            $seriesData[1]['value']++;
+                        }
+                    }
+                    $valueArr=array($seriesData[0]['value'],$seriesData[1]['value']);
+                    $legendData=['是','否'];
+                    $arr=[
+                        'legendData'=>$legendData,
+                        'seriesData'=>$seriesData,
+                        'title'=>'领取礼品'
+                    ];
+                    break;
+                case '8':
+                    $seriesData=[
+                        ['value'=>0,'name'=>'是'],
+                        ['value'=>0,'name'=>'否']
+                    ];
+                    foreach ($rows as $k => $v) {
+                        if($v['is_get_weixin']==1){
+                            $seriesData[0]['value']++;
+                        }elseif($v['is_get_weixin']==0){
+                            $seriesData[1]['value']++;
+                        }
+                    }
+                    $valueArr=array($seriesData[0]['value'],$seriesData[1]['value']);
+                    $legendData=['是','否'];
+                    $arr=[
+                        'legendData'=>$legendData,
+                        'seriesData'=>$seriesData,
+                        'title'=>'加咨询员'
+                    ];
+                    break;
+                case '9':
+                    $seriesData=[
+                        ['value'=>0,'name'=>'是'],
+                        ['value'=>0,'name'=>'否']
+                    ];
+                    foreach ($rows as $k => $v) {
+                        if($v['is_take_ajiance']==1){
+                            $seriesData[0]['value']++;
+                        }elseif($v['is_take_ajiance']==0){
+                            $seriesData[1]['value']++;
+                        }
+                    }
+                    $valueArr=array($seriesData[0]['value'],$seriesData[1]['value']);
+                    $legendData=['是','否'];
+                    $arr=[
+                        'legendData'=>$legendData,
+                        'seriesData'=>$seriesData,
+                        'title'=>'关注艾检测'
+                    ];
+                    break;
+
+            }
+            return json($arr);
+        }
+        if(session('aid')!=1){//超级管理员显示所有
+            $role_id=session('role_id');
+            if(in_array($role_id,$this->getAllVct())){
+                //如果属于vct机构管理员角色 则获取所有下级办公室
+                $this->vctArr=[];//先清空以前的数据
+                $this->getVctArr($role_id);
+            }
+        }else{
+            $this->getAllVct();
+        }
+        $allNext=$this->vctArr;
+        $zixundianList=db('role',[],false)->where('id','in',$allNext)->field('pid,id,name')->select();
+        $config=[
+            'id'=>'id',
+            'pid'=>'pid',
+            'title'=>'name'
+        ];
+        $tree=new Tree($config);
+        $zixundianList=$tree->toList($zixundianList);
+        $this->assign('zixundianList',$zixundianList);
+        return $this->fetch();
     }
 }

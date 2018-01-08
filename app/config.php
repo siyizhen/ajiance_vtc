@@ -262,5 +262,9 @@ return [
     //文件上传
     'addwater'=>false,
     'watertext'=>'CLTPHP',
-    'version'=>'5.5'
+    'version'=>'5.5',
+    'accessKeyId'=>'LTAIkJKTxBAfio8j',
+    'accessKeySecret'=>'1waY6MA4ordI34GGLoCJthnvHffzFa',
+    'signName'=>'艾检测',
+    'vct_template_code'=>'SMS_105145065'
 ];
