@@ -32,5 +32,5 @@ return [
     'servicesInfo/:id/:catId' => 'home/services/info',
 
     'team/:catId' => 'home/team/index',
-    'contact/:catId' => 'home/contact/index',
+    'contact/:catId' => 'home/contact/index'
 ];

@@ -7,6 +7,14 @@ class Admin extends Model
 		$user=db('admin')->where('username',$data['username'])->find();
 		if($user){
 			if($user['pwd'] == md5($data['password'])){
+				if(isset($data['autoLogin'])){
+					if($data['autoLogin']){
+						cookie('username',$user['username'],config('cookie_time'));
+						cookie('aid',$user['admin_id'],config('cookie_time'));
+						cookie('group_id',$user['group_id'],config('cookie_time'));
+						cookie('role_id',$user['role_id'],config('cookie_time'));
+					}
+				}
 				session('username',$user['username']);
 				session('aid',$user['admin_id']);
 				session('group_id',$user['group_id']);

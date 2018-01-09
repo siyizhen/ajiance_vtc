@@ -30,10 +30,12 @@
 		        <td>{$m.listorder}</td>
 		        <td>{$m.title_display}</td>
 		        <td>
+		        {if condition="$m.id neq 1"}
 		        <a href="{:url('roleEdit')}?id={$m.id}" class="layui-btn layui-btn-xs"><i class="fa fa-paste"></i> 编辑
 		        </a>
 		        <button class="layui-btn layui-btn-xs layui-btn-danger" onclick="delAct({$m.id})"><i class="fa fa-trash-o"></i> 删除
 		        </button>
+		        {/if}
 		        </td>
 		      </tr>
 		    {/volist}

@@ -8,6 +8,10 @@ class Common extends Controller
     protected $mod,$role,$system,$nav,$menudata,$cache_model,$categorys,$module,$moduleid,$adminRules,$HrefId;
     public function _initialize()
     {
+        //首先判断是不是手机端
+        if(isMobile()){
+            $this->redirect('homeadmin/index/add');
+        }
 
         //判断管理员是否登录
         if (!session('aid')) {
@@ -65,9 +69,5 @@ class Common extends Controller
         $this->getVctArr(config('role_root_vct'));
         array_push($this->vctArr,config('role_root_vct'));
         return $this->vctArr;
-    }
-
-    public function getAllNext($role_id){
-
     }
 }

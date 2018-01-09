@@ -59,7 +59,7 @@ return [
     // +----------------------------------------------------------------------
 
     // 默认模块名
-    'default_module'         => 'home',
+    'default_module'         => 'Admin',
     // 禁止访问模块
     'deny_module_list'       => ['common'],
     // 默认控制器名
@@ -266,5 +266,8 @@ return [
     'accessKeyId'=>'LTAIkJKTxBAfio8j',
     'accessKeySecret'=>'1waY6MA4ordI34GGLoCJthnvHffzFa',
     'signName'=>'艾检测',
-    'vct_template_code'=>'SMS_105145065'
+    'vct_template_code'=>'SMS_105145065',
+    'cookie_time'=>3600*24*7,
+    'role_root_vct'=>11,
+    'role_root_vct_admin_id'=>9
 ];

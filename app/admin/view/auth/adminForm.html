@@ -19,7 +19,7 @@
                 <select name="role_id" lay-verify="required">
                     <option value="">请选择</option>
                     {volist name="roleList" id="m"}
-                    <option value="{$m.id}">{$m.title_display}</option>
+                    <option value="{$m.id}" {if condition="$infos.role_id eq $m.id"}selected=""{/if}>{$m.title_display}</option>
                     {/volist}
                 </select>
             </div>

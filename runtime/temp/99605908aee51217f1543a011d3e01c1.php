@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:3:{s:46:"F:\www\php/app/admin\view\auth\adminGroup.html";i:1514860702;s:42:"F:\www\php/app/admin\view\common\head.html";i:1514860702;s:42:"F:\www\php/app/admin\view\common\foot.html";i:1514860702;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:3:{s:46:"F:\www\php/app/admin\view\auth\adminGroup.html";i:1515482528;s:42:"F:\www\php/app/admin\view\common\head.html";i:1514860702;s:42:"F:\www\php/app/admin\view\common\foot.html";i:1514860702;}*/ ?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -29,9 +29,11 @@
 
 
 <script type="text/html" id="action">
+    {{# if(d.group_id!=1){ }}
     <a href="<?php echo url('groupAccess'); ?>?id={{d.group_id}}" class="layui-btn layui-btn-xs layui-btn-normal">配置规则</a>
     <a href="<?php echo url('groupEdit'); ?>?id={{d.group_id}}" class="layui-btn layui-btn-warm layui-btn-xs"><?php echo lang('edit'); ?></a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><?php echo lang('del'); ?></a>
+    {{# } }}
 </script>
 <script>
 

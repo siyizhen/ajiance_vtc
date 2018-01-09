@@ -132,6 +132,7 @@ class Auth extends Common
         }else{
             $auth_group = AuthGroup::all();
             $info = Admin::get(['admin_id'=>input('admin_id')]);
+            $this->assign('infos',json_decode($info,true));
             $selected = db('auth_group')->where('group_id',$info['group_id'])->find();
             $this->assign('selected',json_encode($selected,true));
             $this->assign('info', $info->toJson());

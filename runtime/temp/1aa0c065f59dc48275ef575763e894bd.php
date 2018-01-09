@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:3:{s:45:"F:\www\php/app/admin\view\auth\adminForm.html";i:1515130858;s:42:"F:\www\php/app/admin\view\common\head.html";i:1514860702;s:42:"F:\www\php/app/admin\view\common\foot.html";i:1514860702;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:3:{s:45:"F:\www\php/app/admin\view\auth\adminForm.html";i:1515481160;s:42:"F:\www\php/app/admin\view\common\head.html";i:1514860702;s:42:"F:\www\php/app/admin\view\common\foot.html";i:1514860702;}*/ ?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -35,7 +35,7 @@
                 <select name="role_id" lay-verify="required">
                     <option value="">请选择</option>
                     <?php if(is_array($roleList) || $roleList instanceof \think\Collection || $roleList instanceof \think\Paginator): $i = 0; $__LIST__ = $roleList;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$m): $mod = ($i % 2 );++$i;?>
-                    <option value="<?php echo $m['id']; ?>"><?php echo $m['title_display']; ?></option>
+                    <option value="<?php echo $m['id']; ?>" <?php if($infos['role_id'] == $m['id']): ?>selected=""<?php endif; ?>><?php echo $m['title_display']; ?></option>
                     <?php endforeach; endif; else: echo "" ;endif; ?>
                 </select>
             </div>

@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:3:{s:40:"F:\www\php/app/admin\view\vct\index.html";i:1515388302;s:42:"F:\www\php/app/admin\view\common\head.html";i:1514860702;s:42:"F:\www\php/app/admin\view\common\foot.html";i:1514860702;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:3:{s:40:"F:\www\php/app/admin\view\vct\index.html";i:1515479668;s:42:"F:\www\php/app/admin\view\common\head.html";i:1514860702;s:42:"F:\www\php/app/admin\view\common\foot.html";i:1514860702;}*/ ?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -217,7 +217,7 @@
                 {field: 'from_qudao', title: '得知渠道', width: 100,align: 'center'},
                 {field: 'visited_reason', title: '来访原因', width: 120,align: 'center'},
                 {field: 'baolou_reason', title: '暴露原因', width: 160,align: 'center'},
-                {field: 'renqun_shuxing', title: '人群属性', width: 100,align: 'center'},
+                {field: 'renqun_shuxing', title: '人群属性', width: 120,align: 'center'},
                 {field: 'jinbiao_jiance', title: '金标检测', width: 100,align: 'center'},
                 {field: 'quezheng_danwei', title: '确证单位', width: 100,align: 'center'},
                 {field: 'last_jiance_jigou', title: '上次检测机构', width: 130,align: 'center'},

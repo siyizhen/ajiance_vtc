@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:3:{s:44:"F:\www\php/app/admin\view\auth\roleList.html";i:1515130078;s:42:"F:\www\php/app/admin\view\common\head.html";i:1514860702;s:42:"F:\www\php/app/admin\view\common\foot.html";i:1514860702;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:3:{s:44:"F:\www\php/app/admin\view\auth\roleList.html";i:1515482594;s:42:"F:\www\php/app/admin\view\common\head.html";i:1514860702;s:42:"F:\www\php/app/admin\view\common\foot.html";i:1514860702;}*/ ?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -46,10 +46,12 @@
 		        <td><?php echo $m['listorder']; ?></td>
 		        <td><?php echo $m['title_display']; ?></td>
 		        <td>
+		        <?php if($m['id'] != 1): ?>
 		        <a href="<?php echo url('roleEdit'); ?>?id=<?php echo $m['id']; ?>" class="layui-btn layui-btn-xs"><i class="fa fa-paste"></i> 编辑
 		        </a>
 		        <button class="layui-btn layui-btn-xs layui-btn-danger" onclick="delAct(<?php echo $m['id']; ?>)"><i class="fa fa-trash-o"></i> 删除
 		        </button>
+		        <?php endif; ?>
 		        </td>
 		      </tr>
 		    <?php endforeach; endif; else: echo "" ;endif; ?>
